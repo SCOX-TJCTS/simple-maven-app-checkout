@@ -8,11 +8,6 @@ pipeline{
     jdk 'Amazon Corretto 8'
   }
   stages{
-    stage("Clone Repo"){
-            steps{
-                checkout scm
-            }
-        }
      stage ("Build / Package"){
             steps{
                 dir("simple-maven-app") {
