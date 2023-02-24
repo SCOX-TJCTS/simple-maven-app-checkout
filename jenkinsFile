@@ -16,7 +16,14 @@ pipeline{
               }  
         }
         
-     stage ("Alternate Branch"){
+   stage ("Deploy Branch"){
+     when {branch 'deploy'}
+            steps{
+                 sh '$JAVA_HOME/bin/java -version'   
+              }  
+        }
+        
+     stage ("Feature Branch"){
      when {branch 'feature'}
             steps{
                  sh 'printenv'   
