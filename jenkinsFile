@@ -7,13 +7,6 @@ pipeline{
   tools {
     jdk 'Amazon Corretto 8'
   }
-  stages{
-     stage ("checkout"){
-            steps{
-                checkout scm
-              }  
-        }
-  
      stage ("Build / Package"){
             steps{
                     sh "mvn clean package"
@@ -23,7 +16,7 @@ pipeline{
         
      stage ("Alternate Branch"){
      when { 
-      branch "testing"
+      branch 'testing'
      }
             steps{
                  sh '$JAVA_HOME/bin/java -version'   
