@@ -7,6 +7,7 @@ pipeline{
   tools {
     jdk 'Amazon Corretto 8'
   }
+
   stages{
      stage ("Build / Package"){
             steps{
@@ -16,11 +17,12 @@ pipeline{
         }
         
      stage ("Alternate Branch"){
-     when { branch "*/testing"}
+     when {branch 'deploy'}
             steps{
                  sh '$JAVA_HOME/bin/java -version'   
               }  
-        }   
+        }
+        
      stage('SSH transfer') {
         steps([$class: 'BapSshPromotionPublisherPlugin']) {
             sshPublisher(
@@ -34,4 +36,4 @@ pipeline{
             }
         }
     }
-  }
+}
