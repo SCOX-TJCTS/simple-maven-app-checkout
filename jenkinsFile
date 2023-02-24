@@ -10,11 +10,9 @@ pipeline{
   stages{
      stage ("Build / Package"){
             steps{
-                dir("simple-maven-app") {
                     sh "mvn clean package"
                     archiveArtifacts artifacts: 'target/my-app-1.0-SNAPSHOT.jar', followSymlinks: false
-                }
-            }  
+              }  
         }
      stage('SSH transfer') {
         steps([$class: 'BapSshPromotionPublisherPlugin']) {
