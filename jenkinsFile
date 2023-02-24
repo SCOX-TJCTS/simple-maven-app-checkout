@@ -17,13 +17,11 @@ pipeline{
         }
         
      stage ("Alternate Branch"){
-     when { 
-      branch 'test'
-     }
             steps{
                  sh '$JAVA_HOME/bin/java -version'   
               }  
-        }   
+        }
+        
      stage('SSH transfer') {
         steps([$class: 'BapSshPromotionPublisherPlugin']) {
             sshPublisher(
