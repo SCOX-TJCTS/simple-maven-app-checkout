@@ -17,9 +17,8 @@ pipeline{
         }
         
      stage ("Alternate Branch!"){
-     when { 
-        expression {env.GIT_BRANCH == 'develop'}
-          }
+       when { branch 'develop'}
+  
             steps{
                  sh '$JAVA_HOME/bin/java -version'   
               }  
