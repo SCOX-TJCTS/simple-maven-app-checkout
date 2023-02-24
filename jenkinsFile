@@ -18,7 +18,7 @@ pipeline{
         
      stage ("Alternate Branch"){
      when { 
-      branch 'testing'
+      branch 'test'
      }
             steps{
                  sh '$JAVA_HOME/bin/java -version'   
