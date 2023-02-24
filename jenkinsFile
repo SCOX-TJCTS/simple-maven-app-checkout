@@ -1,0 +1,60 @@
+pipeline{
+  agent any
+  environment {
+    RELEASENAME="Pipeline Publish SSH testing"
+  }
+
+  tools {
+    jdk 'Amazon Corretto 8'
+  }
+  stages{
+    stage ("Clean Up"){
+            steps{
+                deleteDir()
+            }
+        }
+    stage("Clone Repo"){
+            steps{
+                sh "git clone https://github.com/SCOX-TJCTS/simple-maven-app.git"
+            }
+        }
+     stage ("Version"){
+            steps{
+            dir("simple-maven-app") {
+                sh '$JAVA_HOME/bin/java -version'
+                }
+            }
+        }   
+    stage ("Build"){
+            steps{
+                dir("simple-maven-app") {
+                    sh "mvn clean install"
+                }
+            }  
+        }
+    stage ("Package"){
+            steps {
+                dir("simple-maven-app") {
+                    sh "mvn package"
+                    archiveArtifacts artifacts: 'target/my-app-1.0-SNAPSHOT.jar', followSymlinks: false
+                }
+            }
+        }
+    stage('SSH transfer') {
+        steps([$class: 'BapSshPromotionPublisherPlugin']) {
+            sshPublisher(
+                continueOnError: false, failOnError: true,
+                publishers: [
+                    sshPublisherDesc(
+                        configName: "tjcts80_test",
+                        verbose: true,
+                        transfers: [
+                            sshTransfer(sourceFiles: "simple-maven-app/target/my-app-1.0-SNAPSHOT.jar",)
+                        ]
+                    )
+                ]
+            )
+        }
+    }
+  }
+  }
