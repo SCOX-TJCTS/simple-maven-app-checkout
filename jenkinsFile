@@ -7,6 +7,8 @@ pipeline{
   tools {
     jdk 'Amazon Corretto 8'
   }
+
+  stages{
      stage ("Build / Package"){
             steps{
                     sh "mvn clean package"
@@ -35,4 +37,4 @@ pipeline{
             }
         }
     }
-
+}
