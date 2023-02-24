@@ -8,39 +8,20 @@ pipeline{
     jdk 'Amazon Corretto 8'
   }
   stages{
-    stage ("Clean Up"){
-            steps{
-                deleteDir()
-            }
-        }
     stage("Clone Repo"){
             steps{
-                sh "git clone https://github.com/SCOX-TJCTS/simple-maven-app.git"
+                checkout scm
             }
         }
-     stage ("Version"){
-            steps{
-            dir("simple-maven-app") {
-                sh '$JAVA_HOME/bin/java -version'
-                }
-            }
-        }   
-    stage ("Build"){
+     stage ("Build / Package"){
             steps{
                 dir("simple-maven-app") {
-                    sh "mvn clean install"
+                    sh "mvn clean package"
+                    archiveArtifacts artifacts: 'target/my-app-1.0-SNAPSHOT.jar', followSymlinks: false
                 }
             }  
         }
-    stage ("Package"){
-            steps {
-                dir("simple-maven-app") {
-                    sh "mvn package"
-                    archiveArtifacts artifacts: 'target/my-app-1.0-SNAPSHOT.jar', followSymlinks: false
-                }
-            }
-        }
-    stage('SSH transfer') {
+     stage('SSH transfer') {
         steps([$class: 'BapSshPromotionPublisherPlugin']) {
             sshPublisher(
                 continueOnError: false, failOnError: true,
@@ -49,12 +30,8 @@ pipeline{
                         configName: "tjcts80_test",
                         verbose: true,
                         transfers: [
-                            sshTransfer(sourceFiles: "simple-maven-app/target/my-app-1.0-SNAPSHOT.jar",)
-                        ]
-                    )
-                ]
-            )
+                            sshTransfer(sourceFiles: "simple-maven-app/target/my-app-1.0-SNAPSHOT.jar",)])])
+            }
         }
     }
-  }
   }
