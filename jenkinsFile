@@ -16,15 +16,17 @@ pipeline{
               }  
         }
         
-     stage ("Deploy Branch"){
-     when {branch 'deploy'}
+ stage ("Deploy Branch"){
+     when {expression {env.GIT_BRANCH == 'origin/deploy'}
+          }
             steps{
                  sh '$JAVA_HOME/bin/java -version'   
               }  
         }
         
      stage ("Feature Branch"){
-     when {branch 'feature'}
+    when {expression {env.GIT_BRANCH == 'origin/feature'}
+          }
             steps{
                  sh 'printenv'   
               }  
