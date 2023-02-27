@@ -1,9 +1,6 @@
 pipeline{
   agent any
-  environment {
-    RELEASENAME="Pipeline Publish SSH testing"
-  }
-
+ 
   tools {
     jdk 'Amazon Corretto 8'
   }
@@ -15,33 +12,32 @@ pipeline{
                     archiveArtifacts artifacts: 'target/my-app-1.0-SNAPSHOT.jar', followSymlinks: false
               }  
         }
-        
- stage ("Deploy Branch"){
-     when {expression {env.GIT_BRANCH == 'origin/deploy'}
-          }
-            steps{
-                 sh '$JAVA_HOME/bin/java -version'   
-              }  
-        }
-        
-     stage ("Feature Branch"){
-    when {expression {env.GIT_BRANCH == 'origin/feature'}
-          }
-            steps{
-                 sh 'printenv'   
-              }  
-        }
-        
-     stage('SSH transfer') {
-        steps([$class: 'BapSshPromotionPublisherPlugin']) {
-            sshPublisher(
-                continueOnError: false, failOnError: true,
-                publishers: [
-                    sshPublisherDesc(
-                        configName: "tjcts80_test",
-                        verbose: true,
-                        transfers: [
-                            sshTransfer(sourceFiles: "simple-maven-app/target/my-app-1.0-SNAPSHOT.jar",)])])
+ 
+        stage('Deploy or Feature') { 
+            parallel {
+                
+                     stage ("Deploy Branch"){
+                       when {expression {env.GIT_BRANCH == 'origin/deploy'}
+                          }
+                          steps{
+                            sh '$JAVA_HOME/bin/java -version'   
+                          }  
+                        }
+                
+                
+                    stage ("Feature Branch"){
+                      when {expression {env.GIT_BRANCH == 'origin/feature'}
+                         }
+                          steps{
+                            sh 'printenv'   
+                          }  
+                        }
+                      } 
+                    }
+
+        stage('SSH transfer') {
+              steps{echo 'Hello World'
+              }
             }
         }
     }
