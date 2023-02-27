@@ -24,7 +24,7 @@ pipeline{
         }
         
      stage ("Feature Branch"){
-     when {branch 'feature'}
+    // when {branch 'feature'}
             steps{
                  sh 'printenv'   
               }  
