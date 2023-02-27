@@ -24,7 +24,7 @@ pipeline{
         }
         
      stage ("Feature Branch"){
-    // when {branch 'feature'}
+    when {expression {env.GIT_BRANCH == 'origin/feature'}
             steps{
                  sh 'printenv'   
               }  
