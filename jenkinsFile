@@ -52,7 +52,7 @@ pipeline{
              from: '',
              mimeType: 'text/html', 
              replyTo: '', 
-             subject: "${env.JOB_NAME} - Build #${env.BUILD_NUMBER} -${env.BUILD_STATUS}", 
+             subject: "${env.JOB_NAME} - Build #${env.BUILD_NUMBER} -${currentBuild.currentResult}", 
              to: "scox@tjctechnology.com";  
          }  
       }
