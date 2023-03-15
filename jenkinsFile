@@ -8,7 +8,7 @@ pipeline{
   stages{
      stage ("Build / Package"){
             steps{
-                    sh "mvn clean package"
+                    sh "mvn clean package -P test"
                     archiveArtifacts artifacts: 'target/my-app-1.0-SNAPSHOT.jar', followSymlinks: false
               }  
         }
@@ -46,7 +46,7 @@ pipeline{
          }  
          success {  
              mail bcc: '', 
-             body: "<b>Example</b><br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br> URL de build: ${env.BUILD_URL}", 
+             body: "<br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br> URL de build: ${env.BUILD_URL}", 
              cc: '', 
              charset: 'UTF-8',
              from: '',
@@ -54,7 +54,18 @@ pipeline{
              replyTo: '', 
              subject: "${env.JOB_NAME} - Build #${env.BUILD_NUMBER} -${currentBuild.currentResult}", 
              to: "scox@tjctechnology.com";  
-         }  
+         }
+            failure {  
+             mail bcc: '', 
+             body: "<br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br> URL de build: ${env.BUILD_URL}", 
+             cc: '', 
+             charset: 'UTF-8',
+             from: '',
+             mimeType: 'text/html', 
+             replyTo: '', 
+             subject: "${env.JOB_NAME} - Build #${env.BUILD_NUMBER} -${currentBuild.currentResult}", 
+             to: "scox@tjctechnology.com";  
+         } 
       }
     }
 
