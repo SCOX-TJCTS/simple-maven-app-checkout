@@ -1,4 +1,4 @@
-def getEmailNotification (String message) {"scox@tjctechnology.com"}
+
 
 
 
@@ -9,7 +9,10 @@ pipeline{
   tools {
     jdk 'Amazon Corretto 8'
   }
-
+  
+ environment{
+     getEmailNotification = 'scox@tjctechnology.com'
+ }
   stages{
      stage ("Build / Package"){
             steps{
