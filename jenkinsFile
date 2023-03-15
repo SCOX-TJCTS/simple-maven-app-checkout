@@ -56,7 +56,7 @@ pipeline{
              mimeType: 'text/html', 
              replyTo: '', 
              subject: "${env.JOB_NAME} - Build #${env.BUILD_NUMBER} -${currentBuild.currentResult}", 
-             to: $getEmailNotification;  
+             to: ${getEmailNotification};  
          }
             failure {  
              mail bcc: '', 
@@ -67,7 +67,7 @@ pipeline{
              mimeType: 'text/html', 
              replyTo: '', 
              subject: "${env.JOB_NAME} - Build #${env.BUILD_NUMBER} -${currentBuild.currentResult}", 
-             to: $getEmailNotification;  
+             to: ${getEmailNotification};  
          } 
          unstable {  
              mail bcc: '', 
@@ -78,7 +78,7 @@ pipeline{
              mimeType: 'text/html', 
              replyTo: '', 
              subject: "${env.JOB_NAME} - Build #${env.BUILD_NUMBER} -${currentBuild.currentResult}", 
-             to: $getEmailNotification;
+             to: ${getEmailNotification};
       }
     }
 
