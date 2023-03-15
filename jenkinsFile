@@ -1,4 +1,4 @@
-def getEmailNotification  {"scox@tjctechnology.com"}
+def getEmailNotification (String message) {"scox@tjctechnology.com"}
 
 
 
