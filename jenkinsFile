@@ -1,4 +1,4 @@
-pipeline{
+opipeline{
   agent any
  
   tools {
@@ -36,7 +36,7 @@ pipeline{
                     }
 
         stage('SSH transfer') {
-              steps{error("Build failed because of this and that..")
+              steps{echo "Hello World"
               }
             }
         }
