@@ -12,6 +12,7 @@ pipeline{
   
  environment{
      getEmailNotification = 'scox@tjctechnology.com'
+     NOTIFICATION_EMAIL = true
  }
   stages{
      stage ("Build / Package"){
@@ -44,10 +45,26 @@ pipeline{
                     }
 
         stage('SSH transfer') {
-              steps{echo 'Hello World'
-              }
-            }
-        }
+             steps{ 
+                  script{
+                        if (env.NOTIFICATION_EMAIL =='true'){
+                              mail bcc: '', 
+                              body: "<br>Project: ${env.JOB_NAME} <br>Build Number: ${env.BUILD_NUMBER} <br> URL de build: ${env.BUILD_URL}", 
+                              cc: '', 
+                              charset: 'UTF-8',
+                              from: '',
+                              mimeType: 'text/html', 
+                              replyTo: '', 
+                              subject: "${env.JOB_NAME} - Build #${env.BUILD_NUMBER} -${currentBuild.currentResult}", 
+                              to: "${getEmailNotification}";  
+                              echo 'email sent'}
+                       else {
+                              echo 'email not sent'
+                            }
+                        }
+                    }
+                  }
+                } 
  post{
         
          success {  
