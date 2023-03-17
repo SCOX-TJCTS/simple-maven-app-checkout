@@ -59,7 +59,7 @@ pipeline{
                               to: "${getEmailNotification}";  
                               echo 'email sent'
                               }
-                          sh echo 'this happens always'
+                          sh 'echo this happens always'
                        
                         }
                     }
