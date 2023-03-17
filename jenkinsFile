@@ -57,10 +57,10 @@ pipeline{
                               replyTo: '', 
                               subject: "${env.JOB_NAME} - Build #${env.BUILD_NUMBER} -${currentBuild.currentResult}", 
                               to: "${getEmailNotification}";  
-                              echo 'email sent'}
-                       else {
-                              echo 'email not sent'
-                            }
+                              echo 'email sent'
+                              }
+                          sh echo 'this happens always'
+                       
                         }
                     }
                   }
